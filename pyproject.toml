@@ -20,6 +20,7 @@ dependencies = [
     "torchlibrosa",
     "librosa",
     "tensorboard",
+    "vendi_score"
 ]
 
 [tool.setuptools.packages.find]
