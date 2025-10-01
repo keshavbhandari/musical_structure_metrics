@@ -49,7 +49,7 @@ A compelling musical piece might exhibit both high SDC (it's coherent) and high 
 Install the package and its dependencies directly from the GitHub repository:
 
 ```bash
-pip install git+https://github.com/keshavbhandari/musical_structure_metrics.git
+pip install structural-derivation
 ```
 
 ### 2. Example Usage

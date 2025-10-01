@@ -9,7 +9,7 @@ description = "Metrics for Musical Structure"
 authors = [
     {name = "Keshav Bhandari", email = "keshavbhandari@gmail.com"}
 ]
-readme = "README.md"
+readme = { file = "readme.md", content-type = "text/markdown" }
 license = {file = "LICENSE"}
 
 # Dependencies
