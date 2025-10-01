@@ -121,7 +121,7 @@ The model was trained using a contrastive learning objective on a large-scale co
 
 - MAESTRO v3.0.0
 
-Re-training on Custom Data
+### 4. Re-training on Custom Data
 If you wish to re-train the model on your own dataset, you can use the provided training script. Run the following command from the root of the repository, adjusting the GPU devices as needed:
 
 ```bash
