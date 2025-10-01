@@ -49,16 +49,16 @@ A compelling musical piece might exhibit both high SDC (it's coherent) and high 
 Install the package and its dependencies directly from the GitHub repository:
 
 ```bash
-pip install git+[https://github.com/keshavbhandari/musical_structure_metrics.git](https://github.com/keshavbhandari/musical_structure_metrics.git)
+pip install git+https://github.com/keshavbhandari/musical_structure_metrics.git
 ```
 
 ### 2. Example Usage
 
-The following script loads the model from Hugging Face, processes a list of audio files, and prints the resulting scores. The `analyze_audio_files` function handles splitting the audio, batching, and computing both metrics.
+The following script loads the model from Hugging Face, processes a list of audio files, and prints the resulting scores. The `process_audio_files` function handles splitting the audio, batching, and computing both metrics.
 
 ```python
 import torch
-from structure_derivation.analyzer import analyze_audio_files
+from structure_derivation.inference.batch_inference import process_audio_files
 from structure_derivation.model.model import StructureDerivationModel
 
 # 1. Set up the device and load the model
@@ -80,13 +80,14 @@ my_audio_files = [
 
 # 3. Analyze the files to get the scores
 # This function returns a dictionary with file paths as keys
-analysis_results = analyze_audio_files(my_audio_files, model, batch_size=128, segment_seconds=20, target_sr=32000)
+results = process_audio_files(audio_paths=my_audio_files, model=model, batch_size=128, segment_seconds=10, target_sr=32000)
 
 # 4. Print the results
-for path, scores in analysis_results.items():
-    print(f"\n--- Results for: {path} ---")
-    print(f"  Structural Derivation Consistency: {scores['Structural Derivation Consistency']:.4f}")
-    print(f"  Structural Diversity: {scores['Structural Diversity']:.4f}")
+for path, res in results.items():
+    print(f"\nResults for {path}:")
+    print("Cosine similarities with S1:", res["similarities"])
+    print("Average Structure Derivation:", res["avg_structure_derivation"])
+    print("Vendi score:", res["vendi_score"])
 ```
 
 ### 3. Model Architecture & Training

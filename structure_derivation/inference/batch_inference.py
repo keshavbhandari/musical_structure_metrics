@@ -122,6 +122,7 @@ def process_audio_files(audio_paths, model, batch_size=128, segment_seconds=10, 
         batch_map = segment_map[i : i + batch_size]
 
         # Compute embeddings
+        device = next(model.parameters()).device
         emb_batch = compute_embeddings_batch(model, batch, device)
 
         # Assign embeddings back to their audio
