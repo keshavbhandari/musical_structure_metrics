@@ -12,7 +12,7 @@ class StructureDerivationModelConfig(PretrainedConfig):
                  embed_dim=96, depths=[2, 2, 6, 2], num_heads=[4, 8, 16, 32], htsat_window_size=8,
                  window_size=1024, mlp_ratio=4., qkv_bias=True, qk_scale=None,
                  drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1,
-                 norm_layer=nn.LayerNorm, ape=False, patch_norm=True, use_checkpoint=False, 
+                 norm_layer="layernorm", ape=False, patch_norm=True, use_checkpoint=False, 
                  norm_before_mlp='ln', enable_tscam=True, sample_rate=32000, hop_size=320, mel_bins=128,
                  fmin=20, fmax=16000, htsat_attn_heatmap=False, htsat_hier_output=False,
                  htsat_use_max=False, enable_repeat_mode=False, loss_type=None, temperature=0.1, **kwargs):

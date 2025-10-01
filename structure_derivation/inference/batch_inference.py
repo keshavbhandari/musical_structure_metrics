@@ -7,8 +7,6 @@ from structure_derivation.model.model import StructureDerivationModel, Structure
 from vendi_score import vendi
 from collections import defaultdict
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 # ----------------- Model Loader -----------------
 def load_model(ckpt_path, device):
@@ -21,6 +19,14 @@ def load_model(ckpt_path, device):
         model.module.load_state_dict(ckpt["model"]["module"])  # DDP checkpoint
     else:
         model.load_state_dict(ckpt["model"])
+    model.eval()
+    return model
+
+def load_model_huggingface(device):
+    model = StructureDerivationModel.from_pretrained(
+    "keshavbhandari/structure-derivation"
+    )
+    model.to(device)
     model.eval()
     return model
 
@@ -151,20 +157,26 @@ def process_audio_files(audio_paths, model, batch_size=128, segment_seconds=10, 
 
 
 # ----------------- Usage -----------------
-CHECKPOINTS_DIR = "/keshav/musical_structure_metrics/structure_derivation/artifacts/structure_derivation_model/checkpoint/"
-ckpt_path = os.path.join(CHECKPOINTS_DIR, "checkpoint.pt")
 
-model = load_model(ckpt_path, device)
+if __name__ == "__main__":
 
-audio_paths = [
-    "/mnt/data/marble/mtg_jamendo/mtg-jamendo-dataset/data/raw_30s_audio/91/1092591.mp3",
-    "/mnt/data/marble/mtg_jamendo/mtg-jamendo-dataset/data/raw_30s_audio/93/1001893.mp3",
-]
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-results = process_audio_files(audio_paths, model, batch_size=128, segment_seconds=10)
+    model = StructureDerivationModel.from_pretrained(
+    "keshavbhandari/structure-derivation"
+    )
+    model.to(device)
+    model.eval()
 
-for path, res in results.items():
-    print(f"\nResults for {path}:")
-    print("Cosine similarities with S1:", res["similarities"])
-    print("Average Structure Derivation:", res["avg_structure_derivation"])
-    print("Vendi score:", res["vendi_score"])
+    audio_paths = [
+        "/mnt/data/marble/mtg_jamendo/mtg-jamendo-dataset/data/raw_30s_audio/91/1092591.mp3",
+        "/mnt/data/marble/mtg_jamendo/mtg-jamendo-dataset/data/raw_30s_audio/93/1001893.mp3",
+    ]
+
+    results = process_audio_files(audio_paths, model, batch_size=128, segment_seconds=20)
+
+    for path, res in results.items():
+        print(f"\nResults for {path}:")
+        print("Cosine similarities with S1:", res["similarities"])
+        print("Average Structure Derivation:", res["avg_structure_derivation"])
+        print("Vendi score:", res["vendi_score"])

@@ -15,7 +15,9 @@ import torch
 import torch.nn as nn
 import torch.utils.checkpoint as checkpoint
 
-from torchlibrosa.stft import Spectrogram, LogmelFilterBank
+from .patch import Spectrogram
+
+from torchlibrosa.stft import LogmelFilterBank
 from torchlibrosa.augmentation import SpecAugmentation
 
 from itertools import repeat
@@ -458,7 +460,11 @@ class HTSAT_Swin_Transformer(nn.Module):
         self.qk_scale = config.qk_scale
 
         self.patch_norm = config.patch_norm
-        self.norm_layer = config.norm_layer if self.patch_norm else None
+        # self.norm_layer = config.norm_layer if self.patch_norm else None
+        if config.norm_layer == "layernorm":
+            self.norm_layer = nn.LayerNorm
+        elif config.norm_layer == "batchnorm":
+            self.norm_layer = nn.BatchNorm1d
         self.norm_before_mlp = config.norm_before_mlp
         self.mlp_ratio = config.mlp_ratio
 
