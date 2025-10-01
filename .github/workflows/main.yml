@@ -3,6 +3,8 @@ name: Sync README to Hugging Face
 on:
   push:
     branches: [ main ]
+    paths:
+      - "README.md"   # only trigger if README.md changes
 
 jobs:
   sync:
@@ -10,11 +12,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up huggingface-cli
+      - name: Install dependencies
         run: pip install huggingface_hub
 
-      - name: Log in to Hugging Face
-        run: huggingface-cli login --token ${{ secrets.HF_TOKEN }}
-
-      - name: Push README to Hugging Face
-        run: git push hf main
+      - name: Upload README.md to Hugging Face
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'EOF'
+          from huggingface_hub import HfApi
+          api = HfApi()
+          api.upload_file(
+              path_or_fileobj="README.md",
+              path_in_repo="README.md",
+              repo_id="keshavbhandari/Structure-Derivation",
+              repo_type="model",
+              token="${HF_TOKEN}"
+          )
+          EOF
