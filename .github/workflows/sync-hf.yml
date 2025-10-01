@@ -2,7 +2,7 @@ name: Sync README to Hugging Face
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]   # change to master if your branch is master
 
 jobs:
   sync:
@@ -10,7 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 1   # ensures it actually pulls repo files
+          fetch-depth: 1
+
+      - name: Show repo files
+        run: ls -la
 
       - name: Install dependencies
         run: pip install huggingface_hub
@@ -21,11 +24,18 @@ jobs:
         run: |
           python - <<'EOF'
           from huggingface_hub import HfApi
-          import os
-          assert os.path.exists("README.md"), "README.md not found in repo!"
+          import os, glob
+
+          print("Files in root:", os.listdir("."))
+          candidates = glob.glob("README.md") + glob.glob("readme.md") + glob.glob("Readme.md")
+          if not candidates:
+              raise FileNotFoundError("No README.md found in repo root!")
+          readme_path = candidates[0]
+          print(f"Found README at: {readme_path}")
+
           api = HfApi()
           api.upload_file(
-              path_or_fileobj="README.md",
+              path_or_fileobj=readme_path,
               path_in_repo="README.md",
               repo_id="keshavbhandari/Structure-Derivation",
               repo_type="model",
