@@ -1,3 +1,13 @@
+---
+license: apache-2.0
+language:
+- en
+tags:
+- music
+- audio
+- structure
+---
+
 # Structural Derivation: A Model for Analyzing Musical Coherence
 
 This repository contains a model trained to understand the internal structure of music. It can be used to generate two novel metrics for any given audio file: the **Structural Derivation Consistency (SDC)** score and the **Structural Diversity** score.
