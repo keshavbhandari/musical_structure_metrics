@@ -173,7 +173,7 @@ if __name__ == "__main__":
         "/mnt/data/marble/mtg_jamendo/mtg-jamendo-dataset/data/raw_30s_audio/93/1001893.mp3",
     ]
 
-    results = process_audio_files(audio_paths, model, batch_size=128, segment_seconds=20)
+    results = process_audio_files(audio_paths, model, batch_size=128, segment_seconds=20, target_sr=32000)
 
     for path, res in results.items():
         print(f"\nResults for {path}:")

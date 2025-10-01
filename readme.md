@@ -80,7 +80,7 @@ my_audio_files = [
 
 # 3. Analyze the files to get the scores
 # This function returns a dictionary with file paths as keys
-analysis_results = analyze_audio_files(my_audio_files, model, device)
+analysis_results = analyze_audio_files(my_audio_files, model, batch_size=128, segment_seconds=20, target_sr=32000)
 
 # 4. Print the results
 for path, scores in analysis_results.items():
